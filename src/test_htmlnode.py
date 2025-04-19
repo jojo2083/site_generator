@@ -1,8 +1,8 @@
 import unittest
-from htmlnode import HTMLNode  # Adjust the import as necessary
+from htmlnode import HTMLNode, LeafNode  # Adjust the import as necessary
 
 class TestHTMLNode(unittest.TestCase):
-
+## Test HTML Node cases
     def test_empty_props(self):
         node = HTMLNode(tag="div", props=None)
         self.assertEqual(node.props_to_html(), "")
@@ -18,6 +18,23 @@ class TestHTMLNode(unittest.TestCase):
     def test_special_characters_in_props(self):
         node = HTMLNode(tag="img", props={"alt": 'An "example" image', "src": "image.png"})
         self.assertEqual(node.props_to_html(), ' alt="An &quot;example&quot; image" src="image.png"')
+## Test LeafNode cases
+    def test_leaf_to_html_p(self):
+        node = LeafNode("p", "Hello, world!")
+        self.assertEqual(node.to_html(), "<p>Hello, world!</p>")
+
+    def test_leaf_to_html_no_value(self):
+        with self.assertRaises(ValueError) as context:
+            LeafNode("p", None)
+        self.assertEqual(str(context.exception), "LeafNode must have a value.")
+    
+    def test_leaf_with_empty_props(self):
+        node = LeafNode("p", "No props!", {})
+        self.assertEqual(node.to_html(), "<p>No props!</p>")
+
+    def test_leaf_no_tag_returns_raw_value(self):
+        node = LeafNode(None, "Raw text without tag")
+        self.assertEqual(node.to_html(), "Raw text without tag")
 
 if __name__ == "__main__":
     unittest.main()
