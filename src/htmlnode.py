@@ -38,3 +38,27 @@ class LeafNode(HTMLNode):
         # Generate tag attributes using parent class's method
         attributes = self.props_to_html()
         return f"<{self.tag}{attributes}>{html.escape(self.value)}</{self.tag}>"
+    
+class ParentNode(HTMLNode):
+    def __init__(self, tag=None,children= None, props=None):
+        if tag == None:
+            raise ValueError("Requires a tag.")
+        if children == None:
+            raise ValueError("children are required.")
+        super().__init__(tag=tag, children=children, props=props)
+        
+    def to_html(self):
+            if self.tag == None:
+                raise ValueError("Requires a tag.")
+            if self.children == None:
+                raise ValueError("children are required.")
+            ## start html string   
+            html = f"<{self.tag}{self.props_to_html()}>"
+            ##add children
+            for child in self.children:
+                html += child.to_html()
+            ##close string
+            html += f"</{self.tag}>"
+
+            return html    
+    

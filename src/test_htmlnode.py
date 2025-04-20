@@ -1,5 +1,5 @@
 import unittest
-from htmlnode import HTMLNode, LeafNode  # Adjust the import as necessary
+from htmlnode import HTMLNode, LeafNode, ParentNode  # Adjust the import as necessary
 
 class TestHTMLNode(unittest.TestCase):
 ## Test HTML Node cases
@@ -35,6 +35,20 @@ class TestHTMLNode(unittest.TestCase):
     def test_leaf_no_tag_returns_raw_value(self):
         node = LeafNode(None, "Raw text without tag")
         self.assertEqual(node.to_html(), "Raw text without tag")
+##ParentNode tests
+    def test_to_html_with_children(self):
+        child_node = LeafNode("span", "child")
+        parent_node = ParentNode("div", [child_node])
+        self.assertEqual(parent_node.to_html(), "<div><span>child</span></div>")
+
+    def test_to_html_with_grandchildren(self):
+        grandchild_node = LeafNode("b", "grandchild")
+        child_node = ParentNode("span", [grandchild_node])
+        parent_node = ParentNode("div", [child_node])
+        self.assertEqual(
+            parent_node.to_html(),
+            "<div><span><b>grandchild</b></span></div>",
+        )
 
 if __name__ == "__main__":
     unittest.main()
