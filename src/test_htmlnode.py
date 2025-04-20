@@ -1,6 +1,7 @@
 import unittest
 from htmlnode import HTMLNode, LeafNode, ParentNode  # Adjust the import as necessary
 
+
 class TestHTMLNode(unittest.TestCase):
 ## Test HTML Node cases
     def test_empty_props(self):
